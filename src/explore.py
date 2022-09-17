@@ -8,91 +8,94 @@ import seaborn as sns
 import copy
 
 import pandas as pd
+from matplotlib import pyplot as plt
 
 df_master=pd.read_csv("./Stores.csv")
 df = copy.copy(df_master)
 print(df.head())
-sns.pairplot(df,corner=True)
-plt.show()
 
-#def read_data() :
-#    global df_master
-#    df_master=pd.read_csv("./Stores.csv")
-#
-#read_data()
-#def printlines():
-#    print()
-#    print()
-#    print()
-#def printhorizon():
-#    print("==============================")
+def read_data() :
+    global df_master
+    df_master=pd.read_csv("./Stores.csv")
 
-#def view() :
-#    print(df_master.head())
-#    printlines()
-#
-#view()
-#
-#def validate():
-#    printhorizon()
-#    print("Number of null Records")
-#    print(df_master.isnull().sum())
-#
-#validate()
-#
-#printlines()
-#def explore_customer_count_and_item_available():
-#    printhorizon()
-#    df = copy.copy(df_master)
-#    df = df.sort_values(by = "Daily_Customer_Count")
-#    sns.catplot(x = "Daily_Customer_Count",y = "Items_Available", data = df, aspect =4)
-#    #plt.xticks(rotation =90)
-#    plt.show()
-sns.pairplot(df_master,corner=True)
-plt.show()
-explore_customer_count_and_item_available()
 
-#if (1==1) :
-#    quit();
+def printlines():
+    print()
+    print()
+    print()
+def printhorizon():
+    print("==============================")
 
-df=copy.copy(df_master)
+def view() :
+    print(df_master.head())
+    printlines()
 
-plt.show()
+def customer_count_and_item():
 
-print("df.head done")
-print("df.info() start")
-df.info()
+    plt.figure(figsize=(20, 8), dpi=200)
+    ax2 = plt.subplot(221)
+    plt.hist(df.Items_Available ,color='#1f77b4',bins=20)
+    ax3 = plt.subplot(222)
+    plt.hist(df.Daily_Customer_Count, color='#7f7f7f',bins=20)
 
-print("df.info() DONE")
-print("df.describe() Start")
-res_desc=df.describe()
+    ax2.set_title('Items_Available')
+    ax3.set_title('Daily_Customer_Count')
+    plt.show()
+#customer_count_and_item()
 
-print("df.describe() :", res_desc)
-print("df.columns START ")
-res_columns = df.columns
-print("result of df.columns  ", res_columns)
+def customer_count_and_store_area():
+    plt.figure(figsize=(20, 8), dpi=200)
+    ax1 = plt.subplot(221)
+    plt.hist(df.Store_Area, color='#e35f62',bins=20)
+    ax3 = plt.subplot(222)
+    plt.hist(df.Daily_Customer_Count, color='#7f7f7f',bins=20)
+    ax1.set_title('Store_Area')
+    ax3.set_title('Daily_Customer_Count')
+    plt.show()
 
-df=df.drop('Store ID ', axis=1)
-df.head()
-sns.pairplot(df,corner=True)
-plt.show()
-sns.scatterplot(x="Store_Area",y="Items_Available",
+def customer_count_and_store_area_item_sales():
+    plt.figure(figsize=(20, 8), dpi=200)
+
+    ax1 = plt.subplot(221)
+    plt.hist(df.Store_Area, color='#e35f62',bins=20)
+    ax2 = plt.subplot(222)
+    plt.hist(df.Items_Available ,color='#1f77b4',bins=20)
+    ax3 = plt.subplot(223)
+    plt.hist(df.Daily_Customer_Count, color='#7f7f7f',bins=20)
+    ax4 = plt.subplot(224)
+    plt.hist(df.Store_Sales, color='#17becf',bins=20)
+
+    ax1.set_title('Store_Area')
+    ax2.set_title('Items_Available')
+    ax3.set_title('Daily_Customer_Count')
+    ax4.set_title('Store_Sales')
+
+    plt.show()
+
+def store_area_item():
+    sns.scatterplot(x="Store_Area",y="Items_Available",
                 data=df,hue="Items_Available")
+    plt.show()
 
-plt.show()
-plt.figure(figsize=(8,6))
+def heatmap_correlation():
+    sns.heatmap(df.corr(),annot=True)
+    plt.show()
 
-plt.show()
-print("scatterplot DONE ")
+def corr_store_sales():
+    df.corr()['Store_Sales'].sort_values()[:-1].plot(kind='bar')
+    plt.show()
 
-sns.heatmap(df.corr(),annot=True)
+def pairplot():
+    sns.pairplot(df, palette='Paired')
+    plt.show()
 
-plt.show()
+read_data()
+customer_count_and_item()
+customer_count_and_store_area()
+customer_count_and_store_area_item_sales()
+store_area_item()
+heatmap_correlation()
+corr_store_sales()
 
 
-df.corr()['Store_Sales']
-plt.show()
-
-df.corr()['Store_Sales'].sort_values()[:-1].plot(kind='bar')
-plt.show()
-
+pairplot()
